@@ -1,7 +1,14 @@
-import Image from "next/image";
+import { AddTask } from "@/components/AddTask";
+import { ToDoList } from "@/components/ToDoList";
 
 export default function Home() {
-    return <main>
-      <h1>My ToDo Application!</h1>
-    </main>;
+    return (
+        <main>
+            <div className="text-center flex flex-col">
+                <h1 className="text-2xl font-b">My ToDo Application!</h1>
+                <AddTask />
+            </div>
+            <ToDoList />
+        </main>
+    );
 }
