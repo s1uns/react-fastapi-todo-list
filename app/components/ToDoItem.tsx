@@ -1,7 +1,7 @@
 import React from "react";
 
 export type ToDoObject = {
-    id: number;
+    id: string;
     name: string;
     priority: number;
     isDone: boolean;
