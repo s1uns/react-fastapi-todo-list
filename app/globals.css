@@ -39,11 +39,7 @@ th {
 
 @layer components {
     .btn {
-        @apply text-2xl text-center bg-gradient-to-br from-cyan-600 via-blue-600 to-purple-600 font-medium flex flex-row justify-center items-center px-3 py-2 rounded-lg  hover:shadow-btn-hover active:shadow-btn-active active:-translate-y-[0.1rem]  hover:bg-gradient-to-tl disabled:bg-none;
-    }
-
-    .btn:hover {
-        transform: translateY(-0.25rem);
+        @apply text-2xl text-center bg-gradient-to-br from-cyan-600 via-blue-600 to-purple-600 font-medium flex flex-row justify-center items-center px-3 py-2 rounded-lg  hover:shadow-btn-hover active:shadow-btn-active hover:-translate-y-1 active:translate-y-1  hover:bg-gradient-to-tl disabled:bg-none;
     }
 
     .btn:disabled {
