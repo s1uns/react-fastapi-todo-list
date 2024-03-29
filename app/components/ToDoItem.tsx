@@ -19,7 +19,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
         >
             <td className="border px-8 py-4 ">{name}</td>
             <td className="border px-8 py-4">
-                <PriorityBar priority={priority} />
+                <PriorityBar priority={priority} isDone={isDone} />
             </td>
             <td className="border px-8 py-4">
                 <div className="flex flex-row gap-5 justify-end">
