@@ -6,8 +6,17 @@ import { ToDoObject } from "@/types/todo";
 
 export const ToDoList: React.FC = () => {
     const [todos, setTodos] = useState<ToDoObject[]>([
-        { id: "1", name: "task 1", priority: 5, isDone: true },
+        { id: "1", name: "task 1", priority: 1, isDone: true },
         { id: "2", name: "task 2", priority: 10, isDone: false },
+        { id: "3", name: "task 3", priority: 2, isDone: true },
+        { id: "4", name: "task 4", priority: 3, isDone: false },
+        { id: "5", name: "task 5", priority: 4, isDone: true },
+        { id: "6", name: "task 6", priority: 5, isDone: false },
+        { id: "7", name: "task 7", priority: 6, isDone: true },
+        { id: "8", name: "task 8", priority: 7, isDone: false },
+        { id: "6", name: "task 6", priority: 8, isDone: false },
+        { id: "7", name: "task 7", priority: 9, isDone: true },
+        { id: "8", name: "task 8", priority: 7, isDone: false },
     ]);
 
     return (
