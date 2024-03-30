@@ -28,7 +28,7 @@ export const Search: FC = () => {
         updateSearchInput(event.target.value);
     };
     return (
-        <div className="relative h-full w-1/3 text-black">
+        <div className="relative h-1/2 w-1/3 text-black">
             <FaSearch className="w-[30px] h-[30px] opacity-70 absolute left-[15px] top-1/3" />
             <input
                 ref={inputRef}
