@@ -2,13 +2,13 @@
 
 import { ToDoList } from "@/components/ToDoList";
 import { ControlPanel } from "@/components/ControlPanel";
+import { ChooseTasksPanel } from "@/components/ChooseTasksPanel";
 
 export default function Home() {
     return (
         <main>
-            <div className="text-center flex flex-col py-16">
-                <ControlPanel />
-            </div>
+            <ControlPanel />
+            <ChooseTasksPanel />
             <ToDoList />
         </main>
     );
