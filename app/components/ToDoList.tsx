@@ -4,18 +4,13 @@ import React, { useEffect, useState } from "react";
 import { ToDoItem } from "@/components/ToDoItem";
 import { ToDoObject } from "@/types/todo";
 
-export const ToDoList: React.FC = () => {
-    const [todos, setTodos] = useState<ToDoObject[]>([]);
+interface ListProps {
+    todos: ToDoObject[];
+}
 
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/")
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                setTodos((todos) => data);
-            });
-    }, []);
+
+export const ToDoList: React.FC<ListProps> = ({todos}: ListProps) => {
+
 
     return (
         <div className="h-full mb-10">

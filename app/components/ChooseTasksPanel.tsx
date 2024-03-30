@@ -1,16 +1,18 @@
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/Button";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export const ChooseTasksPanel = () => {
-    const [selectedButton, setSelectedButton] = useState(0);
-
+    const { currentCompletness, setCurrentCompletness } = useGlobalContext();
     return (
         <div className="flex flex-row justify-center items-center h-40 w-full gap-1 mb-10 border-t-8">
             <Button
                 handleClick={() => {
-                    setSelectedButton((v) => 0);
+                    setCurrentCompletness("all");
                 }}
-                styles={`sort-btn ${selectedButton == 0 ? "active" : ""}`}
+                styles={`sort-btn ${
+                    currentCompletness == "all" ? "active" : ""
+                }`}
                 type={"button"}
                 title={"ALL TASKS"}
                 disabled={false}
@@ -19,9 +21,11 @@ export const ChooseTasksPanel = () => {
             </Button>
             <Button
                 handleClick={() => {
-                    setSelectedButton((v) => 1);
+                    setCurrentCompletness("done");
                 }}
-                styles={`sort-btn ${selectedButton == 1 ? "active" : ""}`}
+                styles={`sort-btn ${
+                    currentCompletness == "done" ? "active" : ""
+                }`}
                 type={"button"}
                 title={"DONE TASKS"}
                 disabled={false}
@@ -30,9 +34,11 @@ export const ChooseTasksPanel = () => {
             </Button>
             <Button
                 handleClick={() => {
-                    setSelectedButton((v) => 2);
+                    setCurrentCompletness("undone");
                 }}
-                styles={`sort-btn ${selectedButton == 2 ? "active" : ""}`}
+                styles={`sort-btn ${
+                    currentCompletness == "undone" ? "active" : ""
+                }`}
                 type={"button"}
                 title={"UNDONE TASKS"}
                 disabled={false}
