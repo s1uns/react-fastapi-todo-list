@@ -1,25 +1,47 @@
 "use client";
 
-import React, { useState } from "react";
-import { ToDoItem, ToDoObject } from "@/components/ToDoItem";
+import React, { useEffect, useState } from "react";
+import { ToDoItem } from "@/components/ToDoItem";
+import { ToDoObject } from "@/types/todo";
 
-export const ToDoList: React.FC = () => {
-    const [todos, setTodos] = useState<ToDoObject[]>([
-        { id: "1", name: "task 1", priority: 5, isDone: true },
-        { id: "2", name: "task 2", priority: 3, isDone: false },
-    ]);
+interface ListProps {
+    todos: ToDoObject[];
+}
+
+
+export const ToDoList: React.FC<ListProps> = ({todos}: ListProps) => {
+
 
     return (
-        <div>
-            {todos.map((item) => (
-                <ToDoItem
-                    key={item.id}
-                    id={item.id}
-                    name={item.name}
-                    priority={item.priority}
-                    isDone={item.isDone}
-                />
-            ))}
+        <div className="h-full mb-10">
+            {todos.length > 0 ? (
+                <table className="shadow-lg rounded bg-white border-separate w-full text-5xl">
+                    <tbody>
+                        <tr>
+                            <th className="bg-blue-100 border px-8 py-4">
+                                Title
+                            </th>
+                            <th className="bg-blue-100 border px-8 py-4">
+                                Priority
+                            </th>
+                            <th className="border text-left px-8 py-4"></th>
+                        </tr>
+                        {todos.map((item) => (
+                            <ToDoItem
+                                key={item.id}
+                                id={item.id}
+                                name={item.name}
+                                priority={item.priority}
+                                isDone={item.isDone}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <div className="w-full h-[700px] flex justify-center items-center text-9xl opacity-50 border-solid border-2 border-gray-500 rounded">
+                    CREATE YOUR FIRST TASK
+                </div>
+            )}
         </div>
     );
 };

@@ -10,58 +10,42 @@ router = APIRouter()
 
 #GET ALL ToDoS
 
-@router.get("/")
-async def get_todos(response: Response):
+@router.get("/todos/")
+async def get_todos(response: Response, completness="all", searchQuery="", order="none" ):
 
     try:
-        todos = list_serial(todo_collection.find())
+        todos = todo_collection.find()
+
+        if order != "none":
+            if order == "asc":
+                todos = todos.sort("priority", -1)
+            elif order == "desc":
+                todos = todos.sort("priority", 1)
+            else:
+                raise Exception("wrong order query parameter!")
+
+        if completness != "all":
+            if completness == "done":
+                todos = filter(lambda x: x["isDone"] == True, todos)
+            elif completness == "undone":
+                todos = filter(lambda x: x["isDone"] == False, todos)
+            else:
+                raise Exception("wrong completness query parameter!")
+
+        if searchQuery != "":
+            todos = filter(lambda x: searchQuery.lower().replace(" ", "") in x["name"].lower().replace(" ", ""), todos)
+            
+
+        
         response.status_code = status.HTTP_200_OK
-        return todos
-    except Exception:
+        return list_serial(todos)
+    except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return "Couldn't get the todos list"
-
-
-
-#GET ALL ToDoS SORTED BY PRIORITY
-
-@router.get("/sort/{order}")
-async def get_sorted_todos(order: bool, response: Response):
-    try:
-        todos = list_serial(todo_collection.find().sort("priority", 1 if order else -1))
-        response.status_code = status.HTTP_200_OK
-        return todos
-    except Exception:
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return "Couldn't sort the todos list"
-
-#GET ALL ToDoS FILTERED BY COMPLETENESS
-
-@router.get("/filter/{completeness}")
-async def get_filtered_todos(completeness: bool, response: Response):
-    try:
-        todos = list(filter(lambda x: x["isDone"] == completeness, list_serial(todo_collection.find())))
-        response.status_code = status.HTTP_200_OK
-        return todos
-    except Exception:
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return "Couldn't filter the todos list"
-
-#GET ALL ToDoS WHICH CORRESPOND TO THE SEARCH QUERY
-
-@router.get("/search/{search_query}")
-async def get_searched_todos(search_query: str, response: Response):
-    try:
-        todos = list(filter(lambda x: search_query.lower().replace(" ", "") in x["name"].lower().replace(" ", ""), list_serial(todo_collection.find())))
-        response.status_code = status.HTTP_200_OK
-        return todos
-    except Exception:
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return "Couldn't find the searched todos"
+        return f"Couldn't get the todos list: {str(e)}"
 
 #POST A NEW ToDo
 
-@router.post("/")
+@router.post("/todos/")
 async def post_todo(todo: ToDo, response: Response) :
     try:
         await validate_model(todo)
@@ -81,7 +65,7 @@ async def post_todo(todo: ToDo, response: Response) :
 
 #PUT NEW INFO INTO AN EXISTING ToDo
     
-@router.put("/{id}")
+@router.put("/todos/{id}")
 async def edit_todo(id: str, todo: ToDo, response: Response):
     try:
         await validate_model(todo)
@@ -100,7 +84,7 @@ async def edit_todo(id: str, todo: ToDo, response: Response):
 
 #PUT NEW COMPLETENESS INTO THE ToDo
     
-@router.put("/switch-completeness/{id}")
+@router.put("/todos/switch-completeness/{id}")
 async def switch_completeness(id: str, response: Response):
     try: 
         todo_collection.find_one_and_update({"_id": ObjectId(id)}, [{"$set": {"isDone": {"$not": "$isDone"}}}])
@@ -112,7 +96,7 @@ async def switch_completeness(id: str, response: Response):
 
 #DELETE AN EXISTING ToDo
     
-@router.delete("/{id}")
+@router.delete("/todos/{id}")
 async def delete_todo(id: str, response: Response):
     try:
         todo_collection.find_one_and_delete({"_id": ObjectId(id)})
