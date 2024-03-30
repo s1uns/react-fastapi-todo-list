@@ -8,23 +8,27 @@ import React, {
 } from "react";
 import debounce from "lodash.debounce";
 import { FaSearch } from "react-icons/fa";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export const Search: FC = () => {
-    const [value, setValue] = useState("");
+    const [searchValue, setSearchValue] = useState("");
+    const { setSearchQuery } = useGlobalContext();
     const inputRef = useRef<HTMLInputElement>(null);
 
     const onClear = () => {
-        setValue("");
+        setSearchValue("");
         inputRef.current?.focus();
     };
 
     const updateSearchInput = useCallback(
-        debounce((str: string) => {}, 300),
+        debounce((str: string) => {
+            setSearchQuery(str);
+        }, 400),
         []
     );
 
     const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
+        setSearchValue(event.target.value);
         updateSearchInput(event.target.value);
     };
     return (
@@ -32,12 +36,12 @@ export const Search: FC = () => {
             <FaSearch className="w-[30px] h-[30px] opacity-70 absolute left-[15px] top-1/3" />
             <input
                 ref={inputRef}
-                value={value}
+                value={searchValue}
                 onChange={(event) => onChangeInput(event)}
                 className="bg-white border w-full h-full transition-all duration-[0.15s] ease-[ease-in-out] pl-[50px] px-5 py-3 rounded-[10px] border-solid border-[rgba(0,0,0,0.1)] focus:border focus:border-solid focus:border-[rgba(0,0,0,0.2)] text-5xl"
                 placeholder="Start typing the todo title..."
             />
-            {value && (
+            {searchValue && (
                 <svg
                     fill="none"
                     height="24"
