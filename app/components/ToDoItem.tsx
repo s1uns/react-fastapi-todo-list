@@ -23,25 +23,29 @@ export const ToDoItem: React.FC<ToDoObject> = ({
     return (
         <tr className={` text-white ${isDone ? `bg-slate-200 ` : ""}`}>
             <td
-                className={`text-black border px-8 py-4 ${
+                className={`text-black border px-8 py-4 w-1/3 ${
                     isDone ? `opacity-50 ` : ""
                 }`}
             >
                 {name}
             </td>
-            <td className="border px-8 py-4">
+            <td className="border px-8 py-4 w-1/4">
                 <PriorityBar priority={priority} isDone={isDone} />
             </td>
             <td className="border px-8 py-4">
-                <div className="flex flex-row gap-5 justify-end">
-                    <div className="w-1/4 flex justify-end">
+                <div className="flex flex-row gap-5 justify-end items-center">
+                    <div
+                        className={`w-1/4 flex justify-end ${
+                            isDone && "cursor-not-allowed"
+                        } `}
+                    >
                         <Button
                             handleClick={() => {
                                 setEditTaskValue(name);
                                 setEditPriorityValue(priority);
                                 setModalOpen(true);
                             }}
-                            styles={"h-full w-full"}
+                            styles={"h-full w-full text-white"}
                             type={"button"}
                             title={"EDIT TASK"}
                             disabled={isDone}
@@ -64,7 +68,6 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                                         placeholder="Enter new task's title"
                                         className="input input-bordered w-full"
                                     />
-
                                     <Slider
                                         title="Select tasks' priority"
                                         defaultValue={priority}
@@ -85,18 +88,24 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                             </form>
                         </Modal>
                     </div>
-                    <Button
-                        handleClick={() => {}}
-                        styles={`h-full w-1/4`}
-                        type={"button"}
-                        title={"DELETE TASK"}
-                        disabled={isDone}
+                    <div
+                        className={`w-1/4 flex justify-end ${
+                            isDone && "cursor-not-allowed"
+                        } `}
                     >
-                        DELETE TASK{" "}
-                    </Button>
+                        <Button
+                            handleClick={() => {}}
+                            styles={`h-full w-full  text-white`}
+                            type={"button"}
+                            title={"DELETE TASK"}
+                            disabled={isDone}
+                        >
+                            DELETE TASK{" "}
+                        </Button>
+                    </div>
                     <Button
                         handleClick={() => {}}
-                        styles={`h-full w-1/4 opacity-1  `}
+                        styles={`h-full w-1/4 text-white `}
                         type={"button"}
                         title={"MARK AS DONE/UNDONE"}
                         disabled={false}
