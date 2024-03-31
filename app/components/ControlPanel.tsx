@@ -9,6 +9,7 @@ import { Slider } from "@/components/Slider";
 import { TbFilterX } from "react-icons/tb";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { createTodo, fetchTodos } from "@/services/api";
+import { toast } from "react-toastify";
 
 export const ControlPanel: React.FC = () => {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -26,15 +27,25 @@ export const ControlPanel: React.FC = () => {
     } = useGlobalContext();
 
     const handleSubmitNewTodo = async () => {
-        await createTodo({
+        const response = createTodo({
             name: newTaskNameValue,
             priority: newPriorityValue,
             isDone: false,
         });
-        setNewTaskNameValue("");
-        setNewPriorityValue(10);
-        setModalOpen(false);
-        updateTodos(currentCompletness, searchString, order, setTodos);
+
+        response
+            .then((data) => {
+                setNewTaskNameValue("");
+                setNewPriorityValue(10);
+                setModalOpen(false);
+                updateTodos(currentCompletness, searchString, order, setTodos);
+                toast.success(data);
+            })
+            .catch((error: any) => {
+                if (error.response) {
+                    toast.error(error.response.data);
+                }
+            });
     };
 
     const updateSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
