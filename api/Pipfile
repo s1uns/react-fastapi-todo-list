@@ -1,25 +1,12 @@
 [[source]]
-name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-
-[dev-packages]
-pre-commit = "*"
-black = "*"
-pylint = "*"
-pipenv-to-requirements = "*"
+name = "pypi"
 
 [packages]
-sqlalchemy = "*"
-pydantic = "*"
 fastapi = "*"
-uvicorn = "*"
-starlette = "*"
-gunicorn = "*"
-pymysql = "*"
+
+[dev-packages]
 
 [requires]
 python_version = "3.12"
-
-[pipenv]
-allow_prereleases = true
