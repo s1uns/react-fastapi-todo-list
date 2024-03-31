@@ -4,6 +4,8 @@ import { Button } from "@/components/Button";
 import PriorityBar from "@/components/PriorityBar";
 import { Modal } from "@/components/Modal";
 import { Slider } from "@/components/Slider";
+import { deleteTodo, switchCompletness, updateTodo } from "@/services/api";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export const ToDoItem: React.FC<ToDoObject> = ({
     id,
@@ -12,14 +14,35 @@ export const ToDoItem: React.FC<ToDoObject> = ({
     isDone,
 }) => {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [editTaskValue, setEditTaskValue] = useState<string>(name);
+    const [editTaskNameValue, setEditTaskNameValue] = useState<string>(name);
     const [editPriorityValue, setEditPriorityValue] =
         useState<number>(priority);
+    const { currentCompletness, searchString, order, setTodos, updateTodos } =
+        useGlobalContext();
 
     const updateSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditPriorityValue((oldPriority) => 11 - +e.target.value);
     };
 
+    const handleSubmitUpdateTodo = async () => {
+        await updateTodo(id, {
+            name: editTaskNameValue,
+            priority: editPriorityValue,
+        });
+        setEditTaskNameValue("");
+        setModalOpen(false);
+        updateTodos(currentCompletness, searchString, order, setTodos);
+    };
+
+    const handleDeleteTodo = async () => {
+        await deleteTodo(id);
+        updateTodos(currentCompletness, searchString, order, setTodos);
+    };
+
+    const handleSwitchCompleteness = async () => {
+        await switchCompletness(id);
+        updateTodos(currentCompletness, searchString, order, setTodos);
+    };
     return (
         <tr className={` text-white ${isDone ? `bg-slate-200 ` : ""}`}>
             <td
@@ -41,7 +64,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                     >
                         <Button
                             handleClick={() => {
-                                setEditTaskValue(name);
+                                setEditTaskNameValue(name);
                                 setEditPriorityValue(priority);
                                 setModalOpen(true);
                             }}
@@ -57,35 +80,36 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                             setModalOpen={setModalOpen}
                             title={"Update task's info"}
                         >
-                            <form onSubmit={() => {}}>
-                                <div className="modal-action">
-                                    <input
-                                        value={editTaskValue}
-                                        onChange={(e) =>
-                                            setEditTaskValue(e.target.value)
-                                        }
-                                        type="text"
-                                        placeholder="Enter new task's title"
-                                        className="input input-bordered w-full"
-                                    />
-                                    <Slider
-                                        title="Select tasks' priority"
-                                        defaultValue={priority}
-                                        minValue={1}
-                                        maxValue={10}
-                                        step={1}
-                                        onSlide={updateSlider}
-                                    />
-                                    <Button
-                                        type="submit"
-                                        styles="btn hover:translate-y-0 absolute bottom-3 right-2 w-1/3 h-1/4"
-                                        title={"CREATE TASK"}
-                                        disabled={false}
-                                    >
-                                        Update
-                                    </Button>
-                                </div>
-                            </form>
+                            <div className="modal-action">
+                                <input
+                                    value={editTaskNameValue}
+                                    onChange={(e) =>
+                                        setEditTaskNameValue(e.target.value)
+                                    }
+                                    type="text"
+                                    placeholder="Enter new task's title"
+                                    className="input input-bordered w-full"
+                                />
+                                <Slider
+                                    title="Select tasks' priority"
+                                    minValue={1}
+                                    maxValue={10}
+                                    currentValue={editPriorityValue}
+                                    step={1}
+                                    onSlide={updateSlider}
+                                />
+                                <Button
+                                    type="button"
+                                    styles="btn hover:translate-y-0 absolute bottom-3 right-2 w-1/3 h-1/4"
+                                    title={"CREATE TASK"}
+                                    disabled={false}
+                                    handleClick={() => {
+                                        handleSubmitUpdateTodo();
+                                    }}
+                                >
+                                    Update
+                                </Button>
+                            </div>
                         </Modal>
                     </div>
                     <div
@@ -94,7 +118,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                         } `}
                     >
                         <Button
-                            handleClick={() => {}}
+                            handleClick={async () => handleDeleteTodo()}
                             styles={`h-full w-full  text-white`}
                             type={"button"}
                             title={"DELETE TASK"}
@@ -104,7 +128,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                         </Button>
                     </div>
                     <Button
-                        handleClick={() => {}}
+                        handleClick={() => handleSwitchCompleteness()}
                         styles={`h-full w-1/4 text-white `}
                         type={"button"}
                         title={"MARK AS DONE/UNDONE"}
