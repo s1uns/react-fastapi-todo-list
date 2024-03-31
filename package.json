@@ -30,10 +30,10 @@
     },
     "devDependencies": {
         "@types/lodash.debounce": "^4.0.9",
-        "node": "18.20.0",
-        "daisyui": "4.9.0"
+        "daisyui": "4.9.0",
+        "node": "^16.20.2"
     },
     "engines": {
-        "node": "18.20.0"
+        "node": "16.20.2"
     }
 }
