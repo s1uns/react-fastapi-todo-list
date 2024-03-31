@@ -11,7 +11,7 @@ interface SliderProps {
 
 export const Slider: FC<SliderProps> = (props: SliderProps) => {
     return (
-        <div className="w-full">
+        <div className="w-full flex flex-col justify-center items-center gap-1">
             <h3 className="text-2xl">
                 {props.title}: {props.currentValue}
             </h3>

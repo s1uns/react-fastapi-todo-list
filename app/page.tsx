@@ -54,7 +54,7 @@ export default function Home() {
             }}
         >
             <main>
-                <ToastContainer />
+                <ToastContainer className={"text-3xl w-full w-max-full"} />
                 <ControlPanel />
                 <ChooseTasksPanel />
                 <ToDoList todos={todos} />

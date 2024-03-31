@@ -7,9 +7,13 @@ interface ModalProps {
 
 export const Modal: React.FC<ModalProps> = (props: ModalProps) => {
     return (
-        <div className={`modal ${props.modalOpen ? "modal-open" : ""}`}>
-            <div className="modal-box w-[300rem] max-w-3xl h-[20rem] flex justify-center items-center">
-                <h3 className="font-bold text-5xl absolute left-4 top-2">
+        <div
+            className={`modal color-white ${
+                props.modalOpen ? "modal-open" : ""
+            }`}
+        >
+            <div className="modal-box w-[300rem] max-w-5xl h-[20rem] flex justify-center text-white items-center">
+                <h3 className="font-bold text-5xl absolute left-6 top-6">
                     {props.title}
                 </h3>
                 <label
@@ -18,7 +22,9 @@ export const Modal: React.FC<ModalProps> = (props: ModalProps) => {
                 >
                     ✕
                 </label>
-                <div className="w-full">{props.children}</div>
+                <div className="w-full h-full flex flex-row justify-center items-center ">
+                    {props.children}
+                </div>
             </div>
         </div>
     );

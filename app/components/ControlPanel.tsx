@@ -73,7 +73,7 @@ export const ControlPanel: React.FC = () => {
                     setModalOpen={setModalOpen}
                     title={"Add new task"}
                 >
-                    <div className="modal-action">
+                    <div className="modal-action w-full flex flex-row gap-5">
                         <input
                             value={newTaskNameValue}
                             onChange={(e) =>
@@ -81,7 +81,7 @@ export const ControlPanel: React.FC = () => {
                             }
                             type="text"
                             placeholder="Enter task title"
-                            className="input input-bordered w-full"
+                            className="input input-bordered w-full h-[50px] text-4xl"
                         />
 
                         <Slider
