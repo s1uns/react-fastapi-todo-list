@@ -31,6 +31,8 @@ export default function Home() {
             .catch((error: any) => {
                 if (error.response) {
                     toast.error(error.response.data);
+                } else {
+                    toast.error("Couldn't load the items, try again later!");
                 }
             });
     };
