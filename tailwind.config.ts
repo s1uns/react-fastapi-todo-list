@@ -21,8 +21,19 @@ const config: Config = {
                 "600": "600px",
                 "12rem": "12rem",
             },
+            boxShadow: {
+                "btn-hover": "0 0.5rem 2rem rgba(0, 0, 0, 0.5)",
+                "btn-active": "0 0.2rem 1rem rgba(0, 0, 0, 0.4)",
+            },
+            backgroundPosition: {
+                "pos-0": "0% 0%",
+                "pos-100": "100% 100%",
+            },
         },
     },
-    plugins: [],
+    plugins: [require("daisyui")],
+    daisyui: {
+        themes: ['light'],
+      }
 };
 export default config;
