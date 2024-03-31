@@ -12,16 +12,16 @@ export const ToDoList: React.FC<ListProps> = ({ todos }: ListProps) => {
     return (
         <div className="h-full mb-10">
             {todos.length > 0 ? (
-                <table className="shadow-lg rounded bg-white border-separate w-full text-5xl">
-                    <tbody>
+                <table className="shadow-lg rounded-3xl bg-white border-separate w-full text-5xl">
+                    <tbody className="[&>*]:last:[&>*]:rounded-b-3xl">
                         <tr>
-                            <th className="bg-blue-100 border px-8 py-4">
+                            <th className="bg-blue-100 border px-8 py-4 rounded-tl-3xl">
                                 Title
                             </th>
                             <th className="bg-blue-100 border px-8 py-4">
                                 Priority
                             </th>
-                            <th className="border text-left px-8 py-4"></th>
+                            <th className="border text-left px-8 py-4 rounded-tr-3xl"></th>
                         </tr>
                         {todos.map((item) => (
                             <ToDoItem
