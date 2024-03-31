@@ -35,13 +35,11 @@ async def get_todos(response: Response, completness="all", searchString="", orde
         if searchString != "":
             todos = filter(lambda x: searchString.lower().replace(" ", "") in x["name"].lower().replace(" ", ""), todos)
             
-
-        
         response.status_code = status.HTTP_200_OK
         return list_serial(todos)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return f"Couldn't get the todos list: {str(e)}"
+        return f"Couldn't get the todos list: "
 
 #POST A NEW ToDo
 
