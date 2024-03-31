@@ -35,7 +35,7 @@ export const ToDoList: React.FC<ListProps> = ({ todos }: ListProps) => {
                     </tbody>
                 </table>
             ) : (
-                <div className="w-full h-[700px] flex justify-center items-center text-9xl opacity-50 border-solid border-2 border-gray-500 rounded">
+                <div className="h-[700px] flex justify-center items-center text-9xl opacity-50 border-gray-500">
                     CREATE YOUR FIRST TASK
                 </div>
             )}
