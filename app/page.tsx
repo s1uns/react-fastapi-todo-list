@@ -7,7 +7,8 @@ import { useState, useEffect } from "react";
 import { ToDoObject } from "@/types/todo";
 import { GlobalContext } from "./context/GlobalContext";
 import { fetchTodos } from "./services/api";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Home() {
     const [todos, setTodos] = useState<ToDoObject[]>([]);
     const [currentCompletness, setCurrentCompletness] = useState<
@@ -21,12 +22,17 @@ export default function Home() {
         searchString: string,
         order: string
     ) => {
-        const response = await fetchTodos(
-            currentCompletness,
-            searchString,
-            order
-        );
-        setTodos(response);
+        const response = fetchTodos(currentCompletness, searchString, order);
+
+        response
+            .then((data) => {
+                setTodos(data);
+            })
+            .catch((error: any) => {
+                if (error.response) {
+                    toast.error(error.response.data);
+                }
+            });
     };
 
     useEffect(() => {
@@ -48,6 +54,7 @@ export default function Home() {
             }}
         >
             <main>
+                <ToastContainer className={"text-3xl w-full w-max-full"} />
                 <ControlPanel />
                 <ChooseTasksPanel />
                 <ToDoList todos={todos} />

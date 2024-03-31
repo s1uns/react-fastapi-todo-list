@@ -34,7 +34,7 @@ th {
     }
 
     .btn:disabled {
-        @apply cursor-not-allowed bg-gray-500 text-gray-100 opacity-50 hover:bg-none hover:translate-y-0 hover:shadow-none active:bg-none active:translate-y-0 active:shadow-none;
+        @apply cursor-not-allowed opacity-0 bg-gray-500 text-gray-100 hover:bg-none hover:translate-y-0 hover:shadow-none active:bg-none active:translate-y-0 active:shadow-none;
         cursor: not-allowed !important;
     }
 

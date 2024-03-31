@@ -6,6 +6,7 @@ import { Modal } from "@/components/Modal";
 import { Slider } from "@/components/Slider";
 import { deleteTodo, switchCompletness, updateTodo } from "@/services/api";
 import { useGlobalContext } from "@/context/GlobalContext";
+import { toast } from "react-toastify";
 
 export const ToDoItem: React.FC<ToDoObject> = ({
     id,
@@ -25,18 +26,38 @@ export const ToDoItem: React.FC<ToDoObject> = ({
     };
 
     const handleSubmitUpdateTodo = async () => {
-        await updateTodo(id, {
+        const response = updateTodo(id, {
             name: editTaskNameValue,
             priority: editPriorityValue,
         });
-        setEditTaskNameValue("");
-        setModalOpen(false);
-        updateTodos(currentCompletness, searchString, order, setTodos);
+
+        response
+            .then((data) => {
+                setEditTaskNameValue("");
+                setEditPriorityValue(priority);
+                setModalOpen(false);
+                updateTodos(currentCompletness, searchString, order, setTodos);
+                toast.success(data);
+            })
+            .catch((error: any) => {
+                if (error.response) {
+                    toast.error(error.response.data);
+                }
+            });
     };
 
     const handleDeleteTodo = async () => {
-        await deleteTodo(id);
-        updateTodos(currentCompletness, searchString, order, setTodos);
+        const response = deleteTodo(id);
+        response
+            .then((data) => {
+                updateTodos(currentCompletness, searchString, order, setTodos);
+                toast.success(data);
+            })
+            .catch((error: any) => {
+                if (error.response) {
+                    toast.error(error.response.data);
+                }
+            });
     };
 
     const handleSwitchCompleteness = async () => {
@@ -44,7 +65,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
         updateTodos(currentCompletness, searchString, order, setTodos);
     };
     return (
-        <tr className={` text-white ${isDone ? `bg-slate-200 ` : ""}`}>
+        <tr className={`text-white${isDone ? `bg-slate-200 ` : ""}`}>
             <td
                 className={`text-black border px-8 py-4 w-1/3 ${
                     isDone ? `opacity-50 ` : ""
@@ -57,11 +78,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
             </td>
             <td className="border px-8 py-4">
                 <div className="flex flex-row gap-5 justify-end items-center">
-                    <div
-                        className={`w-1/4 flex justify-end ${
-                            isDone && "cursor-not-allowed"
-                        } `}
-                    >
+                    <div className={"w-1/4 flex justify-end "}>
                         <Button
                             handleClick={() => {
                                 setEditTaskNameValue(name);
@@ -80,7 +97,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                             setModalOpen={setModalOpen}
                             title={"Update task's info"}
                         >
-                            <div className="modal-action">
+                            <div className="modal-action w-full flex flex-row gap-5">
                                 <input
                                     value={editTaskNameValue}
                                     onChange={(e) =>
@@ -88,7 +105,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                                     }
                                     type="text"
                                     placeholder="Enter new task's title"
-                                    className="input input-bordered w-full"
+                                    className="input input-bordered w-full h-[50px] text-4xl"
                                 />
                                 <Slider
                                     title="Select tasks' priority"
@@ -112,11 +129,7 @@ export const ToDoItem: React.FC<ToDoObject> = ({
                             </div>
                         </Modal>
                     </div>
-                    <div
-                        className={`w-1/4 flex justify-end ${
-                            isDone && "cursor-not-allowed"
-                        } `}
-                    >
+                    <div className={"w-1/4 flex justify-end "}>
                         <Button
                             handleClick={async () => handleDeleteTodo()}
                             styles={`h-full w-full  text-white`}
