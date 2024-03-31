@@ -95,7 +95,6 @@ def get_openapi_operation_parameters(
     field_mapping: Dict[
         Tuple[ModelField, Literal["validation", "serialization"]], JsonSchemaValue
     ],
-    separate_input_output_schemas: bool = True,
 ) -> List[Dict[str, Any]]:
     parameters = []
     for param in all_route_params:
@@ -108,7 +107,6 @@ def get_openapi_operation_parameters(
             schema_generator=schema_generator,
             model_name_map=model_name_map,
             field_mapping=field_mapping,
-            separate_input_output_schemas=separate_input_output_schemas,
         )
         parameter = {
             "name": param.alias,
@@ -118,9 +116,7 @@ def get_openapi_operation_parameters(
         }
         if field_info.description:
             parameter["description"] = field_info.description
-        if field_info.openapi_examples:
-            parameter["examples"] = jsonable_encoder(field_info.openapi_examples)
-        elif field_info.example != Undefined:
+        if field_info.example != Undefined:
             parameter["example"] = jsonable_encoder(field_info.example)
         if field_info.deprecated:
             parameter["deprecated"] = field_info.deprecated
@@ -136,7 +132,6 @@ def get_openapi_operation_request_body(
     field_mapping: Dict[
         Tuple[ModelField, Literal["validation", "serialization"]], JsonSchemaValue
     ],
-    separate_input_output_schemas: bool = True,
 ) -> Optional[Dict[str, Any]]:
     if not body_field:
         return None
@@ -146,7 +141,6 @@ def get_openapi_operation_request_body(
         schema_generator=schema_generator,
         model_name_map=model_name_map,
         field_mapping=field_mapping,
-        separate_input_output_schemas=separate_input_output_schemas,
     )
     field_info = cast(Body, body_field.field_info)
     request_media_type = field_info.media_type
@@ -155,11 +149,7 @@ def get_openapi_operation_request_body(
     if required:
         request_body_oai["required"] = required
     request_media_content: Dict[str, Any] = {"schema": body_schema}
-    if field_info.openapi_examples:
-        request_media_content["examples"] = jsonable_encoder(
-            field_info.openapi_examples
-        )
-    elif field_info.example != Undefined:
+    if field_info.example != Undefined:
         request_media_content["example"] = jsonable_encoder(field_info.example)
     request_body_oai["content"] = {request_media_type: request_media_content}
     return request_body_oai
@@ -221,7 +211,6 @@ def get_openapi_path(
     field_mapping: Dict[
         Tuple[ModelField, Literal["validation", "serialization"]], JsonSchemaValue
     ],
-    separate_input_output_schemas: bool = True,
 ) -> Tuple[Dict[str, Any], Dict[str, Any], Dict[str, Any]]:
     path = {}
     security_schemes: Dict[str, Any] = {}
@@ -253,7 +242,6 @@ def get_openapi_path(
                 schema_generator=schema_generator,
                 model_name_map=model_name_map,
                 field_mapping=field_mapping,
-                separate_input_output_schemas=separate_input_output_schemas,
             )
             parameters.extend(operation_parameters)
             if parameters:
@@ -275,7 +263,6 @@ def get_openapi_path(
                     schema_generator=schema_generator,
                     model_name_map=model_name_map,
                     field_mapping=field_mapping,
-                    separate_input_output_schemas=separate_input_output_schemas,
                 )
                 if request_body_oai:
                     operation["requestBody"] = request_body_oai
@@ -293,7 +280,6 @@ def get_openapi_path(
                             schema_generator=schema_generator,
                             model_name_map=model_name_map,
                             field_mapping=field_mapping,
-                            separate_input_output_schemas=separate_input_output_schemas,
                         )
                         callbacks[callback.name] = {callback.path: cb_path}
                 operation["callbacks"] = callbacks
@@ -324,7 +310,6 @@ def get_openapi_path(
                             schema_generator=schema_generator,
                             model_name_map=model_name_map,
                             field_mapping=field_mapping,
-                            separate_input_output_schemas=separate_input_output_schemas,
                         )
                     else:
                         response_schema = {}
@@ -358,7 +343,6 @@ def get_openapi_path(
                             schema_generator=schema_generator,
                             model_name_map=model_name_map,
                             field_mapping=field_mapping,
-                            separate_input_output_schemas=separate_input_output_schemas,
                         )
                         media_type = route_response_media_type or "application/json"
                         additional_schema = (
@@ -449,7 +433,6 @@ def get_openapi(
     terms_of_service: Optional[str] = None,
     contact: Optional[Dict[str, Union[str, Any]]] = None,
     license_info: Optional[Dict[str, Union[str, Any]]] = None,
-    separate_input_output_schemas: bool = True,
 ) -> Dict[str, Any]:
     info: Dict[str, Any] = {"title": title, "version": version}
     if summary:
@@ -476,7 +459,6 @@ def get_openapi(
         fields=all_fields,
         schema_generator=schema_generator,
         model_name_map=model_name_map,
-        separate_input_output_schemas=separate_input_output_schemas,
     )
     for route in routes or []:
         if isinstance(route, routing.APIRoute):
@@ -486,7 +468,6 @@ def get_openapi(
                 schema_generator=schema_generator,
                 model_name_map=model_name_map,
                 field_mapping=field_mapping,
-                separate_input_output_schemas=separate_input_output_schemas,
             )
             if result:
                 path, security_schemes, path_definitions = result
@@ -506,7 +487,6 @@ def get_openapi(
                 schema_generator=schema_generator,
                 model_name_map=model_name_map,
                 field_mapping=field_mapping,
-                separate_input_output_schemas=separate_input_output_schemas,
             )
             if result:
                 path, security_schemes, path_definitions = result

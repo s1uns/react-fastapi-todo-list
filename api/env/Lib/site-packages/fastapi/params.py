@@ -2,7 +2,6 @@ import warnings
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, Sequence, Union
 
-from fastapi.openapi.models import Example
 from pydantic.fields import FieldInfo
 from typing_extensions import Annotated, deprecated
 
@@ -62,7 +61,6 @@ class Param(FieldInfo):
                 "although still supported. Use examples instead."
             ),
         ] = _Unset,
-        openapi_examples: Optional[Dict[str, Example]] = None,
         deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
         json_schema_extra: Union[Dict[str, Any], None] = None,
@@ -71,13 +69,12 @@ class Param(FieldInfo):
         self.deprecated = deprecated
         if example is not _Unset:
             warnings.warn(
-                "`example` has been deprecated, please use `examples` instead",
+                "`example` has been depreacated, please use `examples` instead",
                 category=DeprecationWarning,
                 stacklevel=4,
             )
         self.example = example
         self.include_in_schema = include_in_schema
-        self.openapi_examples = openapi_examples
         kwargs = dict(
             default=default,
             default_factory=default_factory,
@@ -101,7 +98,7 @@ class Param(FieldInfo):
             kwargs["examples"] = examples
         if regex is not None:
             warnings.warn(
-                "`regex` has been deprecated, please use `pattern` instead",
+                "`regex` has been depreacated, please use `pattern` instead",
                 category=DeprecationWarning,
                 stacklevel=4,
             )
@@ -173,7 +170,6 @@ class Path(Param):
                 "although still supported. Use examples instead."
             ),
         ] = _Unset,
-        openapi_examples: Optional[Dict[str, Example]] = None,
         deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
         json_schema_extra: Union[Dict[str, Any], None] = None,
@@ -208,7 +204,6 @@ class Path(Param):
             deprecated=deprecated,
             example=example,
             examples=examples,
-            openapi_examples=openapi_examples,
             include_in_schema=include_in_schema,
             json_schema_extra=json_schema_extra,
             **extra,
@@ -259,7 +254,6 @@ class Query(Param):
                 "although still supported. Use examples instead."
             ),
         ] = _Unset,
-        openapi_examples: Optional[Dict[str, Example]] = None,
         deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
         json_schema_extra: Union[Dict[str, Any], None] = None,
@@ -292,7 +286,6 @@ class Query(Param):
             deprecated=deprecated,
             example=example,
             examples=examples,
-            openapi_examples=openapi_examples,
             include_in_schema=include_in_schema,
             json_schema_extra=json_schema_extra,
             **extra,
@@ -344,7 +337,6 @@ class Header(Param):
                 "although still supported. Use examples instead."
             ),
         ] = _Unset,
-        openapi_examples: Optional[Dict[str, Example]] = None,
         deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
         json_schema_extra: Union[Dict[str, Any], None] = None,
@@ -378,7 +370,6 @@ class Header(Param):
             deprecated=deprecated,
             example=example,
             examples=examples,
-            openapi_examples=openapi_examples,
             include_in_schema=include_in_schema,
             json_schema_extra=json_schema_extra,
             **extra,
@@ -429,7 +420,6 @@ class Cookie(Param):
                 "although still supported. Use examples instead."
             ),
         ] = _Unset,
-        openapi_examples: Optional[Dict[str, Example]] = None,
         deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
         json_schema_extra: Union[Dict[str, Any], None] = None,
@@ -462,7 +452,6 @@ class Cookie(Param):
             deprecated=deprecated,
             example=example,
             examples=examples,
-            openapi_examples=openapi_examples,
             include_in_schema=include_in_schema,
             json_schema_extra=json_schema_extra,
             **extra,
@@ -513,7 +502,6 @@ class Body(FieldInfo):
                 "although still supported. Use examples instead."
             ),
         ] = _Unset,
-        openapi_examples: Optional[Dict[str, Example]] = None,
         deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
         json_schema_extra: Union[Dict[str, Any], None] = None,
@@ -524,13 +512,12 @@ class Body(FieldInfo):
         self.deprecated = deprecated
         if example is not _Unset:
             warnings.warn(
-                "`example` has been deprecated, please use `examples` instead",
+                "`example` has been depreacated, please use `examples` instead",
                 category=DeprecationWarning,
                 stacklevel=4,
             )
         self.example = example
         self.include_in_schema = include_in_schema
-        self.openapi_examples = openapi_examples
         kwargs = dict(
             default=default,
             default_factory=default_factory,
@@ -626,7 +613,6 @@ class Form(Body):
                 "although still supported. Use examples instead."
             ),
         ] = _Unset,
-        openapi_examples: Optional[Dict[str, Example]] = None,
         deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
         json_schema_extra: Union[Dict[str, Any], None] = None,
@@ -661,7 +647,6 @@ class Form(Body):
             deprecated=deprecated,
             example=example,
             examples=examples,
-            openapi_examples=openapi_examples,
             include_in_schema=include_in_schema,
             json_schema_extra=json_schema_extra,
             **extra,
@@ -711,7 +696,6 @@ class File(Form):
                 "although still supported. Use examples instead."
             ),
         ] = _Unset,
-        openapi_examples: Optional[Dict[str, Example]] = None,
         deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
         json_schema_extra: Union[Dict[str, Any], None] = None,
@@ -745,7 +729,6 @@ class File(Form):
             deprecated=deprecated,
             example=example,
             examples=examples,
-            openapi_examples=openapi_examples,
             include_in_schema=include_in_schema,
             json_schema_extra=json_schema_extra,
             **extra,
