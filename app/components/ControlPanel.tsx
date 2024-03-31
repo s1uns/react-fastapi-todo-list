@@ -8,31 +8,34 @@ import { Modal } from "@/components/Modal";
 import { Slider } from "@/components/Slider";
 import { TbFilterX } from "react-icons/tb";
 import { useGlobalContext } from "@/context/GlobalContext";
+import { createTodo, fetchTodos } from "@/services/api";
 
 export const ControlPanel: React.FC = () => {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [newTaskValue, setNewTaskValue] = useState<string>("");
+    const [newTaskNameValue, setNewTaskNameValue] = useState<string>("");
     const [newPriorityValue, setNewPriorityValue] = useState<number>(10);
     const {
+        setTodos,
+        updateTodos,
+        currentCompletness,
         setCurrentCompletness,
-        setSearchQuery,
+        searchString,
+        setSearchString,
         order,
         setOrder,
     } = useGlobalContext();
-    const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = () => {};
 
-    // const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = async (
-    //     e
-    // ) => {
-    //     e.preventDefault();
-    //     await addTodo({
-    //         id: uuidv4(),
-    //         text: newTaskValue,
-    //     });
-    //     setNewTaskValue("");
-    //     setModalOpen(false);
-    //     router.refresh();
-    // };
+    const handleSubmitNewTodo = async () => {
+        await createTodo({
+            name: newTaskNameValue,
+            priority: newPriorityValue,
+            isDone: false,
+        });
+        setNewTaskNameValue("");
+        setNewPriorityValue(10);
+        setModalOpen(false);
+        updateTodos(currentCompletness, searchString, order, setTodos);
+    };
 
     const updateSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewPriorityValue((priority) => 11 - +e.target.value);
@@ -42,7 +45,7 @@ export const ControlPanel: React.FC = () => {
             <div className="w-1/4">
                 <Button
                     handleClick={() => {
-                        setNewTaskValue("");
+                        setNewTaskNameValue("");
                         setNewPriorityValue(10);
                         setModalOpen(true);
                     }}
@@ -59,36 +62,35 @@ export const ControlPanel: React.FC = () => {
                     setModalOpen={setModalOpen}
                     title={"Add new task"}
                 >
-                    <form onSubmit={() => {}}>
-                        <div className="modal-action">
-                            <input
-                                value={newTaskValue}
-                                onChange={(e) =>
-                                    setNewTaskValue(e.target.value)
-                                }
-                                type="text"
-                                placeholder="Enter task title"
-                                className="input input-bordered w-full"
-                            />
+                    <div className="modal-action">
+                        <input
+                            value={newTaskNameValue}
+                            onChange={(e) =>
+                                setNewTaskNameValue(e.target.value)
+                            }
+                            type="text"
+                            placeholder="Enter task title"
+                            className="input input-bordered w-full"
+                        />
 
-                            <Slider
-                                title="Select tasks' priority"
-                                defaultValue={newPriorityValue}
-                                minValue={1}
-                                maxValue={10}
-                                step={1}
-                                onSlide={updateSlider}
-                            />
-                            <Button
-                                type="submit"
-                                styles="btn hover:translate-y-0 absolute bottom-3 right-2 w-1/3 h-1/4"
-                                title={"CREATE TASK"}
-                                disabled={false}
-                            >
-                                Create
-                            </Button>
-                        </div>
-                    </form>
+                        <Slider
+                            title="Select tasks' priority"
+                            minValue={1}
+                            maxValue={10}
+                            step={1}
+                            onSlide={updateSlider}
+                            currentValue={newPriorityValue}
+                        />
+                        <Button
+                            handleClick={() => handleSubmitNewTodo()}
+                            type="button"
+                            styles="btn hover:translate-y-0 absolute bottom-3 right-2 w-1/3 h-1/4"
+                            title={"CREATE TASK"}
+                            disabled={false}
+                        >
+                            Create
+                        </Button>
+                    </div>
                 </Modal>
             </div>
             <div className="flex flex-row w-1/3 gap-6 items-end justify-center h-full px-3 ">
@@ -124,7 +126,7 @@ export const ControlPanel: React.FC = () => {
                 <Button
                     handleClick={() => {
                         setCurrentCompletness("all");
-                        setSearchQuery("");
+                        setSearchString("");
                         setOrder("none");
                     }}
                     styles={"h-1/2 w-1/3"}

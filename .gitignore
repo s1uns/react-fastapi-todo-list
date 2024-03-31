@@ -37,4 +37,4 @@ yarn-error.log*
 next-env.d.ts
 
 #pythoncache
-.pyc .pyc.swp .swp
+*.cpython-312 *.cpython-312.pyc *.cpython-312.pyc.swp *.pyc *.pyc.swp

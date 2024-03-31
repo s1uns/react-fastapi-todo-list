@@ -5,6 +5,7 @@ import React, {
     FC,
     ChangeEvent,
     MouseEvent,
+    useEffect,
 } from "react";
 import debounce from "lodash.debounce";
 import { FaSearch } from "react-icons/fa";
@@ -12,17 +13,22 @@ import { useGlobalContext } from "@/context/GlobalContext";
 
 export const Search: FC = () => {
     const [searchValue, setSearchValue] = useState("");
-    const { setSearchQuery } = useGlobalContext();
+    const { searchString, setSearchString } = useGlobalContext();
     const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        setSearchValue(searchString);
+    }, [searchString]);
 
     const onClear = () => {
         setSearchValue("");
+        setSearchString("");
         inputRef.current?.focus();
     };
 
     const updateSearchInput = useCallback(
         debounce((str: string) => {
-            setSearchQuery(str);
+            setSearchString(str);
         }, 400),
         []
     );

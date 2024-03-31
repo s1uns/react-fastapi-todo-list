@@ -1,6 +1,6 @@
 import json
 from fastapi import APIRouter, Response, status
-from ..models.todos import ToDo
+from ..models.todos import EditTodo, ToDo
 from ..config.database import todo_collection
 from ..schema.schemas import list_serial
 from ..utils.utils import validate_model, InvalidPriorityException, InvalidToDoNameException
@@ -11,7 +11,7 @@ router = APIRouter()
 #GET ALL ToDoS
 
 @router.get("/todos/")
-async def get_todos(response: Response, completness="all", searchQuery="", order="none" ):
+async def get_todos(response: Response, completness="all", searchString="", order="none" ):
 
     try:
         todos = todo_collection.find()
@@ -32,8 +32,8 @@ async def get_todos(response: Response, completness="all", searchQuery="", order
             else:
                 raise Exception("wrong completness query parameter!")
 
-        if searchQuery != "":
-            todos = filter(lambda x: searchQuery.lower().replace(" ", "") in x["name"].lower().replace(" ", ""), todos)
+        if searchString != "":
+            todos = filter(lambda x: searchString.lower().replace(" ", "") in x["name"].lower().replace(" ", ""), todos)
             
 
         
@@ -66,7 +66,7 @@ async def post_todo(todo: ToDo, response: Response) :
 #PUT NEW INFO INTO AN EXISTING ToDo
     
 @router.put("/todos/{id}")
-async def edit_todo(id: str, todo: ToDo, response: Response):
+async def edit_todo(id: str, todo: EditTodo, response: Response):
     try:
         await validate_model(todo)
         todo_collection.find_one_and_update({"_id": ObjectId(id)}, {"$set": dict(todo)})
@@ -82,9 +82,9 @@ async def edit_todo(id: str, todo: ToDo, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return "Couldn't update the todo item, try again later."
 
-#PUT NEW COMPLETENESS INTO THE ToDo
+#GET NEW COMPLETENESS FOR THE ToDo
     
-@router.put("/todos/switch-completeness/{id}")
+@router.get("/todos/switch-completeness/{id}")
 async def switch_completeness(id: str, response: Response):
     try: 
         todo_collection.find_one_and_update({"_id": ObjectId(id)}, [{"$set": {"isDone": {"$not": "$isDone"}}}])

@@ -8,10 +8,7 @@ interface ListProps {
     todos: ToDoObject[];
 }
 
-
-export const ToDoList: React.FC<ListProps> = ({todos}: ListProps) => {
-
-
+export const ToDoList: React.FC<ListProps> = ({ todos }: ListProps) => {
     return (
         <div className="h-full mb-10">
             {todos.length > 0 ? (
