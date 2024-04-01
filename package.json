@@ -3,9 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "fastapi-dev": "pip install -r ./api/requirements.txt && python -m uvicorn api.main:app --reload --env-file api/.env",
+        "fastapi-dev": "pip install -r ./api/requirements.txt && python -m uvicorn api.index:app --reload --env-file api/.env",
         "next-dev": "next dev",
-        "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
+        "dev": "npm run next-dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint"

@@ -50,4 +50,14 @@ next-env.d.ts
 */*/__pycache__/
 
 */__pycache__/
-env
+
+
+# Environments
+
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/

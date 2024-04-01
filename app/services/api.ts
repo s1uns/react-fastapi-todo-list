@@ -1,7 +1,9 @@
 import { ToDoObject, CreateTodoObject, EditTodoObject } from "@/types/todo";
 import axios from "axios";
 
-const url: string = "http://127.0.0.1:8000/todos";
+const url: string = process.env.BACKEND_URL
+    ? `http://${process.env.BACKEND_URL}/api/`
+    : "https://todos-back-s1uns.koyeb.app/";
 
 export const fetchTodos = async (
     currentCompletness: string,
@@ -9,27 +11,27 @@ export const fetchTodos = async (
     order: string
 ) => {
     const { data } = await axios.get<ToDoObject[]>(
-        `${url}/?completness=${currentCompletness}&searchString=${searchString}&order=${order}`
+        `${url}todos?completness=${currentCompletness}&searchString=${searchString}&order=${order}`
     );
 
     return data;
 };
 
 export const createTodo = async (todo: CreateTodoObject) => {
-    const { data } = await axios.post<string>(`${url}/`, todo);
+    const { data } = await axios.post<string>(`${url}todos/`, todo);
     return data;
 };
 
 export const updateTodo = async (id: string, todo: EditTodoObject) => {
-    const { data } = await axios.put<string>(`${url}/${id}`, todo);
+    const { data } = await axios.put<string>(`${url}todos/${id}`, todo);
     return data;
 };
 
 export const deleteTodo = async (id: string) => {
-    const { data } = await axios.delete<string>(`${url}/${id}`);
+    const { data } = await axios.delete<string>(`${url}todos/${id}`);
     return data;
 };
 
 export const switchCompletness = async (id: string) => {
-    const { data } = await axios.get(`${url}/switch-completeness/${id}`);
+    const { data } = await axios.get(`${url}todos/switch-completeness/${id}`);
 };
