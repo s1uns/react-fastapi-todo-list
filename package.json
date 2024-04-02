@@ -3,9 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "fastapi-dev": "pip install -r ./api/requirements.txt && python -m uvicorn api.index:app --reload --env-file api/.env",
-        "next-dev": "next dev",
-        "dev": "npm run next-dev",
+        "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint"

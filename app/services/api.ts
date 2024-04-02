@@ -2,8 +2,8 @@ import { ToDoObject, CreateTodoObject, EditTodoObject } from "@/types/todo";
 import axios from "axios";
 
 const url: string = process.env.BACKEND_URL
-    ? `http://${process.env.BACKEND_URL}/api/`
-    : "https://todos-back-s1uns.koyeb.app/";
+    ? process.env.BACKEND_URL
+    : "http://127.0.0.1:8000/";
 
 export const fetchTodos = async (
     currentCompletness: string,
