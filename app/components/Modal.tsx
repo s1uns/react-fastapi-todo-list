@@ -12,7 +12,10 @@ export const Modal: React.FC<ModalProps> = (props: ModalProps) => {
                 props.modalOpen ? "modal-open" : ""
             }`}
         >
-            <div className="modal-box w-[300rem] max-w-5xl h-[20rem] flex justify-center text-white items-center">
+            <div
+                data-theme="dark"
+                className="modal-box w-[300rem] max-w-5xl h-[20rem] flex justify-center text-white items-center"
+            >
                 <h3 className="font-bold text-5xl absolute left-6 top-6">
                     {props.title}
                 </h3>
